@@ -1,0 +1,40 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title SJ'ZOOM
+    link(rel="stylesheet", href="https://unpkg.com/mvp.css@1.8.0/mvp.css")
+    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css")
+    link(rel="stylesheet", href="/css/app.css")
+  body
+    .chat-room
+      section.header-section
+        h1#app_title.app-title SJ's ZOOM
+        #chat_controller.chat-controller(style="display: none;")
+          i#video_on_off_button.ri-camera-fill.chat-controller-toggle.on
+          i#mic_on_off_button.ri-mic-off-fill.chat-controller-toggle
+      h1#ani.ani 구글 미트 1시간 제한에 빡쳐서 로컬로 돌리는 화상채팅방
+      hr.chat-room-divider
+      main
+        section#chat_room_form_container.chat-room-form-container
+          form#chat_room_form.chat-room-form
+            input.chat-room-text-input(placeholder="채팅방 이름을 입력하거라~")
+            button.chat-room-create-button 만들기
+        section#chat_room_list_container.chat-room-list-container
+        #face_player_container.face-player-container(style="display: none;")
+          .face-player-border
+            video#my_face.face-player.mirror-player(autoplay, playsinline, muted)
+            .face-player-caption &nbsp;
+        #chat_list_container.chat-list-container(style="display: none;")
+          ul.chat-list
+        section#chat_form_container.chat-form-container(style="display: none;")
+          form#nickname_form.nickname-form
+            input.nickname-text-input(placeholder="Nickname", maxlength="15")
+            button.nickname-save-button 저장
+          form#chat_submit_form.chat-submit-form
+            input.chat-submit-text-input(placeholder="채팅을 입력하거라~", maxlength="5000")
+            button.chat-submit-send-button 보내기
+    script(src="/socket.io/socket.io.js")
+    script(src="/js/app.js")

@@ -1,4 +1,8 @@
-# Noom
-[![CircleCI](https://circleci.com/gh/njw1204/noom/tree/master.svg?style=shield)](https://circleci.com/gh/njw1204/noom/tree/master)
+# N:N Zoom 클론 코딩
 
-Zoom Clone
+참조 
+1) https://github.com/njw1204/noom
+2) https://github.com/defrostingk/see-see-call-call
+
+
+

@@ -10,7 +10,13 @@
    npm i
    ```
 
-2. Run 'zoomClone'.
+2. Install yarn.
+
+   ```
+   yarn install
+   ```
+
+3. Run 'zoomClone'.
 
    ```
    npm run dev

@@ -25,17 +25,13 @@ html(lang="en")
           form#room_form.room-form
             input.room-name-input(placeholder="Please enter room's name")
             button.room-create-button Create
-        
         section#room_list_container.room-list-container
-        
         #video_player_container.video-player-container(style="display: none;")
           .video-player-border
             video#my_video.video-player.mirror-player(autoplay, playsinline, muted)
             .video-player-caption &nbsp;
-        
         #chat_list_container.chat-list-container(style="display: none;")
           ul.chat-list
-        
         section#chat_form_container.chat-form-container(style="display: none;")
           form#chat_nickname_form.chat-nickname-form
             input.nickname-input(placeholder="Nickname", maxlength="15")

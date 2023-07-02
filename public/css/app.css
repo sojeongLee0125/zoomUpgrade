@@ -1,9 +1,9 @@
 main {
-  padding-top: 1rem;
+  padding-top: 3rem;
 }
 
 video {
-  background-color: black;
+  background-color: #aaa;
 }
 
 .header-section {
@@ -11,7 +11,8 @@ video {
   justify-content: space-around;
 }
 
-.app-title {
+.chat-title, 
+.chat-desc {
   margin-left: 8px;
   margin-right: 8px;
   display: flex;
@@ -20,25 +21,17 @@ video {
   word-break: break-all;
 }
 
-.ani {
-  margin-left: 8px;
-  margin-right: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  word-break: break-all;
+.room-img-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
-.chat-room-divider {
+.main-divider {
   margin: 0;
 }
 
-.chat-list-container {
-  width: 100%;
-  margin-bottom: 150px;
-}
-
-.chat-room-list-container {
+.room-list-container {
   margin-top: 30px;
   margin-bottom: 30px;
 }
@@ -58,6 +51,11 @@ video {
   background-color: var(--color-link);
 }
 
+.chat-list-container {
+  width: 100%;
+  margin-bottom: 150px;
+}
+
 .chat-list {
   width: 100%;
   padding: 0;
@@ -65,8 +63,8 @@ video {
 }
 
 .chat-list li {
-  margin: 4px 0;
-  padding: 4px 8px;
+  margin: 8px 0;
+  padding: 8px 8px;
   color: #000;
   background-color: #fafafa;
   border: 1px solid var(--color-bg-secondary);
@@ -84,8 +82,8 @@ video {
   right: 1rem;
 }
 
-.chat-room-form,
-.nickname-form {
+.room-form,
+.chat-nickname-form {
   display: flex;
   padding: 1rem;
   background-color: #fff;
@@ -98,17 +96,17 @@ video {
   background-color: #fff;
 }
 
-.chat-room-text-input,
+.room-name-input,
 .chat-submit-text-input,
-.nickname-text-input {
+.nickname-input {
   flex: 1;
   margin: 0;
   border-radius: 0;
 }
 
-.chat-room-create-button,
+.room-create-button,
 .chat-room-leave-button,
-.chat-submit-send-button,
+.chat-submit-button,
 .nickname-save-button {
   margin: 0;
   padding: 0.5rem 1rem;
@@ -116,12 +114,12 @@ video {
 }
 
 .chat-room-leave-button {
-  margin-left: 10px;
+  margin-left: 20px;
   padding: 0.2rem 0.4rem;
   flex-shrink: 0;
 }
 
-.face-player-container {
+.video-player-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 30%));
   align-items: center;
@@ -129,11 +127,11 @@ video {
   gap: 10px;
 }
 
-.face-player-border {
+.video-player-border {
   text-align: center;
 }
 
-.face-player {
+.video-player {
   width: 100%;
 }
 
@@ -155,7 +153,7 @@ video {
 }
 
 .chat-controller-toggle.on {
-  color: grey;
+  color: green;
 }
 
 @keyframes fadeIn {

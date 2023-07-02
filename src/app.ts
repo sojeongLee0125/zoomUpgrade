@@ -1,7 +1,6 @@
 import http from "http";
 import express from "express";
 import { Server } from "socket.io";
-import { instrument } from "@socket.io/admin-ui";
 
 const app = express();
 app.set("views", "views");
@@ -17,18 +16,9 @@ app.get("/*", (req, res) => {
 });
 
 const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: ["https://admin.socket.io"],
-    credentials: true,
-  },
-});
-const users = new Map();
+const io = new Server(server);
 
-instrument(io, {
-  auth: false,
-  namespaceName: "/",
-});
+const users = new Map();
 
 function getRooms(includeSids?: boolean) {
   return Array.from(io.sockets.adapter.rooms.keys())
@@ -200,5 +190,5 @@ io.on("connection", (_socket) => {
 });
 
 server.listen(process.env.PORT || 3000, () => {
-  console.log(`http://localhost:${process.env.PORT || 3000}...`);
+  console.log(`http://localhost:${process.env.PORT || 3000}`);
 });

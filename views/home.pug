@@ -4,37 +4,44 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title SJ'ZOOM
+    title SJ's Room
     link(rel="stylesheet", href="https://unpkg.com/mvp.css@1.8.0/mvp.css")
     link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css")
+    link(rel="shortcut icon" type="image/x-icon" href="/public/images/favicon.ico")
     link(rel="stylesheet", href="/css/app.css")
   body
-    .chat-room
+    .chat-body
       section.header-section
-        h1#app_title.app-title SJ's ZOOM
+        h1#chat_title.chat-title SJ's Room
         #chat_controller.chat-controller(style="display: none;")
           i#video_on_off_button.ri-camera-fill.chat-controller-toggle.on
           i#mic_on_off_button.ri-mic-off-fill.chat-controller-toggle
-      h1#ani.ani N:N Vedio Call By sjLee
-      hr.chat-room-divider
+      h1#chat_desc.chat-desc Welcome to My Video Chat!!
+      #room_img_container.room-img-container
+        img(src="/images/maru.png", alt="aa")
+      hr.main-divider
       main
-        section#chat_room_form_container.chat-room-form-container
-          form#chat_room_form.chat-room-form
-            input.chat-room-text-input(placeholder="채팅방 이름을 입력하거라~")
-            button.chat-room-create-button 만들기
-        section#chat_room_list_container.chat-room-list-container
-        #face_player_container.face-player-container(style="display: none;")
-          .face-player-border
-            video#my_face.face-player.mirror-player(autoplay, playsinline, muted)
-            .face-player-caption &nbsp;
+        section#room_name_form_container.room-name-form-container
+          form#room_form.room-form
+            input.room-name-input(placeholder="Please enter room's name")
+            button.room-create-button Create
+        
+        section#room_list_container.room-list-container
+        
+        #video_player_container.video-player-container(style="display: none;")
+          .video-player-border
+            video#my_video.video-player.mirror-player(autoplay, playsinline, muted)
+            .video-player-caption &nbsp;
+        
         #chat_list_container.chat-list-container(style="display: none;")
           ul.chat-list
+        
         section#chat_form_container.chat-form-container(style="display: none;")
-          form#nickname_form.nickname-form
-            input.nickname-text-input(placeholder="Nickname", maxlength="15")
-            button.nickname-save-button 저장
+          form#chat_nickname_form.chat-nickname-form
+            input.nickname-input(placeholder="Nickname", maxlength="15")
+            button.nickname-save-button Save
           form#chat_submit_form.chat-submit-form
-            input.chat-submit-text-input(placeholder="채팅을 입력하거라~", maxlength="5000")
-            button.chat-submit-send-button 보내기
+            input.chat-submit-text-input(placeholder="Please enter the contents", maxlength="5000")
+            button.chat-submit-button 보내기
     script(src="/socket.io/socket.io.js")
     script(src="/js/app.js")

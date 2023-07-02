@@ -5,6 +5,7 @@ const STORAGE_KEY = Object.freeze({
 
 const socket = window.io();
 const rtcPeerConnectionMap = new Map();
+
 let id = "";
 let nickname = "";
 let myMediaStream;
@@ -12,20 +13,20 @@ let myMediaStream;
 function onReceiveChat(response) {
   const chatListContainer = document.getElementById("chat_list_container");
   const chatList = chatListContainer.querySelector(".chat-list");
-  const chatItem = document.createElement("li");
+  const chat = document.createElement("li");
 
-  const nicknameView = document.createElement("strong");
-  nicknameView.innerText = response.nickname;
+  const chatNickname = document.createElement("strong");
+  chatNickname.innerText = response.nickname;
 
-  const contentView = document.createElement("div");
-  contentView.innerText = response.msg;
+  const contents = document.createElement("div");
+  contents.innerText = response.msg;
 
-  chatItem.appendChild(nicknameView);
-  chatItem.appendChild(contentView);
-  chatList.insertAdjacentElement("afterbegin", chatItem);
+  chat.appendChild(chatNickname);
+  chat.appendChild(contents);
+  chatList.insertAdjacentElement("afterbegin", chat);
 
   if (response.id === id) {
-    chatItem.style.backgroundColor = "rgb(243, 243, 208)";
+    chat.style.backgroundColor = "rgb(243, 243, 208)";
   }
 }
 
@@ -52,7 +53,7 @@ async function makeMediaStream() {
       track.enabled = document.getElementById("mic_on_off_button").classList.contains("on");
     });
 
-    document.getElementById("my_face").srcObject = myMediaStream;
+    document.getElementById("my_video").srcObject = myMediaStream;
   } catch (e) {
     myMediaStream = null;
     console.trace(e);
@@ -78,29 +79,29 @@ function createRTCPeerConnection(peerId, peerNickname) {
       .forEach((track) => myRTCPeerConnection.addTrack(track, myMediaStream));
   }
 
-  const myPeerFacePlayerBorder = document.createElement("div");
-  myPeerFacePlayerBorder.classList.add("peer-face-player-border", "face-player-border");
-  myPeerFacePlayerBorder.dataset.peerId = peerId;
+  const myPeerPlayerBorder = document.createElement("div");
+  myPeerPlayerBorder.classList.add("peer-video-player-border", "video-player-border");
+  myPeerPlayerBorder.dataset.peerId = peerId;
 
-  const myPeerFacePlayer = document.createElement("video");
-  myPeerFacePlayer.classList.add("peer-face-player", "face-player");
-  myPeerFacePlayer.dataset.peerId = peerId;
-  myPeerFacePlayer.autoplay = true;
-  myPeerFacePlayer.playsinline = true;
+  const myPeerPlayer = document.createElement("video");
+  myPeerPlayer.classList.add("peer-video-player", "video-player");
+  myPeerPlayer.dataset.peerId = peerId;
+  myPeerPlayer.autoplay = true;
+  myPeerPlayer.playsinline = true;
 
-  const myPeerFacePlayerCaption = document.createElement("div");
-  myPeerFacePlayerCaption.classList.add("peer-face-player-caption", "face-player-caption");
-  myPeerFacePlayerCaption.dataset.peerId = peerId;
-  myPeerFacePlayerCaption.innerText = peerNickname;
+  const myPeerPlayerCaption = document.createElement("div");
+  myPeerPlayerCaption.classList.add("peer-video-player-caption", "video-player-caption");
+  myPeerPlayerCaption.dataset.peerId = peerId;
+  myPeerPlayerCaption.innerText = peerNickname;
 
-  myPeerFacePlayerBorder.appendChild(myPeerFacePlayer);
-  myPeerFacePlayerBorder.appendChild(myPeerFacePlayerCaption);
+  myPeerPlayerBorder.appendChild(myPeerPlayer);
+  myPeerPlayerBorder.appendChild(myPeerPlayerCaption);
 
   myRTCPeerConnection.ontrack = (event) => {
-    [myPeerFacePlayer.srcObject] = event.streams;
+    [myPeerPlayer.srcObject] = event.streams;
   };
 
-  document.getElementById("face_player_container").appendChild(myPeerFacePlayerBorder);
+  document.getElementById("video_player_container").appendChild(myPeerPlayerBorder);
 
   return myRTCPeerConnection;
 }
@@ -128,10 +129,12 @@ async function joinRoomCallback(response) {
     return;
   }
 
-  document.getElementById("chat_room_form_container").style.display = "none";
-  document.getElementById("ani").style.display = "none";
-  document.getElementById("chat_room_list_container").style.display = "none";
-  document.getElementById("face_player_container").style.display = "";
+  document.getElementById("room_name_form_container").style.display = "none";
+  document.getElementById("chat_desc").style.display = "none";
+  document.getElementById("room_list_container").style.display = "none";
+  document.getElementById("room_img_container").style.display = "none";
+  
+  document.getElementById("video_player_container").style.display = "";
   document.getElementById("chat_list_container").style.display = "";
   document.getElementById("chat_form_container").style.display = "";
   document.getElementById("chat_controller").style.display = "";
@@ -146,9 +149,9 @@ async function joinRoomCallback(response) {
   const leaveButton = document.createElement("button");
   leaveButton.type = "button";
   leaveButton.classList.add("chat-room-leave-button");
-  leaveButton.innerText = "방 나가기";
+  leaveButton.innerText = "Leave";
 
-  document.getElementById("app_title").innerText = `${response.chatRoom}`;
+  document.getElementById("chat_title").innerText = `${response.chatRoom}`;
 
   const appTitleDiv = document.createElement("div");
   appTitleDiv.style.display = "flex";
@@ -157,16 +160,16 @@ async function joinRoomCallback(response) {
   appTitleDiv.appendChild(sizeOfRoom);
   appTitleDiv.appendChild(document.createTextNode(")"));
 
-  document.getElementById("app_title").appendChild(appTitleDiv);
-  document.getElementById("app_title").appendChild(leaveButton);
+  document.getElementById("chat_title").appendChild(appTitleDiv);
+  document.getElementById("chat_title").appendChild(leaveButton);
 
   document.querySelector("#chat_list_container .chat-list").innerHTML = "";
-  document.querySelector("#nickname_form .nickname-text-input").value = nickname;
+  document.querySelector("#chat_nickname_form .nickname-input").value = nickname;
   document.querySelector("#chat_submit_form .chat-submit-text-input").value = "";
 
   leaveButton.addEventListener("click", () => {
     rtcPeerConnectionMap.forEach((connection) => {
-      document.querySelectorAll("#face_player_container .peer-face-player-border").forEach((peerFacePlayerBorder) => {
+      document.querySelectorAll("#video_player_container .peer-video-player-border").forEach((peerFacePlayerBorder) => {
         peerFacePlayerBorder.remove();
       });
       connection.close();
@@ -179,14 +182,15 @@ async function joinRoomCallback(response) {
     }
 
     socket.emit("leave-room", () => {
-      document.getElementById("chat_room_form_container").style.display = "";
-      document.getElementById("chat_room_list_container").style.display = "";
-      document.getElementById("ani").style.display = "";
-      document.getElementById("face_player_container").style.display = "none";
+      document.getElementById("room_img_container").style.display = "";
+      document.getElementById("room_name_form_container").style.display = "";
+      document.getElementById("room_list_container").style.display = "";
+      document.getElementById("chat_desc").style.display = "";
+      document.getElementById("video_player_container").style.display = "none";
       document.getElementById("chat_list_container").style.display = "none";
       document.getElementById("chat_form_container").style.display = "none";
       document.getElementById("chat_controller").style.display = "none";
-      document.getElementById("app_title").innerText = "SJ's ZOOM";
+      document.getElementById("chat_title").innerText = "SJ's Room";
     });
   });
 }
@@ -199,7 +203,7 @@ async function joinRoom(room) {
 }
 
 function refreshRooms(rooms) {
-  const chatRoomListContainer = document.getElementById("chat_room_list_container");
+  const chatRoomListContainer = document.getElementById("room_list_container");
   chatRoomListContainer.innerHTML = "";
 
   rooms.forEach((room) => {
@@ -216,14 +220,14 @@ function refreshRooms(rooms) {
 }
 
 function initApplication() {
-  const chatRoomForm = document.getElementById("chat_room_form");
-  const chatRoomTextInput = chatRoomForm.querySelector(".chat-room-text-input");
-  const nicknameForm = document.getElementById("nickname_form");
-  const nicknameTextInput = nicknameForm.querySelector(".nickname-text-input");
+  const chatRoomForm = document.getElementById("room_form");
+  const chatRoomTextInput = chatRoomForm.querySelector(".room-name-input");
+
+  const nicknameForm = document.getElementById("chat_nickname_form");
+  const nicknameTextInput = nicknameForm.querySelector(".nickname-input");
+
   const chatSubmitForm = document.getElementById("chat_submit_form");
-  const chatSubmitTextInput = chatSubmitForm.querySelector(
-    ".chat-submit-text-input",
-  );
+  const chatSubmitTextInput = chatSubmitForm.querySelector(".chat-submit-text-input");
 
   chatRoomForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -318,7 +322,7 @@ socket.on("notify-join-room", async (response) => {
   onReceiveChat({
     id: response.id,
     nickname: response.nickname,
-    msg: "입장~",
+    msg: "안녕하세용",
   });
 
   const myRTCPeerConnection = createRTCPeerConnection(response.id, response.nickname);
@@ -338,11 +342,11 @@ socket.on("notify-leave-room", (response) => {
   onReceiveChat({
     id: response.id,
     nickname: response.nickname,
-    msg: "퇴장~",
+    msg: "안녕히계세용",
   });
 
   if (rtcPeerConnectionMap.has(response.id)) {
-    const peerFacePlayerBorder = document.querySelector(`#face_player_container .peer-face-player-border[data-peer-id="${response.id}"]`);
+    const peerFacePlayerBorder = document.querySelector(`#video_player_container .peer-video-player-border[data-peer-id="${response.id}"]`);
 
     if (peerFacePlayerBorder) {
       peerFacePlayerBorder.remove();
@@ -357,10 +361,10 @@ socket.on("notify-change-nickname", (response) => {
   onReceiveChat({
     id: response.id,
     nickname: response.oldNickname,
-    msg: `이름 바꿈 ==> ${response.nickname}`,
+    msg: `닉네임 변경 ==> ${response.nickname}`,
   });
 
-  const peerFacePlayerCaption = document.querySelector(`.peer-face-player-caption[data-peer-id="${response.id}"]`);
+  const peerFacePlayerCaption = document.querySelector(`.peer-video-player-caption[data-peer-id="${response.id}"]`);
 
   if (peerFacePlayerCaption) {
     peerFacePlayerCaption.innerText = response.nickname;
